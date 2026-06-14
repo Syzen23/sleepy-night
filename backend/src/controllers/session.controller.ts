@@ -6,13 +6,13 @@ import { desc, eq } from 'drizzle-orm';
 
 export const handleVoiceSession = async (req: Request, res: Response) => {
   try {
-    const { userId, mood, transcript, history, voice, voiceProvider, audioBase64 } = req.body;
+    const { userId, mood, transcript, history, voice, voiceProvider, audioBase64: inputAudioBase64 } = req.body;
 
     let finalTranscript = transcript;
 
-    if (audioBase64) {
+    if (inputAudioBase64) {
       try {
-        finalTranscript = await transcribeAudioBase64(audioBase64);
+        finalTranscript = await transcribeAudioBase64(inputAudioBase64);
       } catch (err) {
         console.error("Transcription failed", err);
         return res.status(500).json({ error: "Gagal memproses rekaman suara" });
@@ -60,8 +60,8 @@ export const handleVoiceSession = async (req: Request, res: Response) => {
       currentTimeStr = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
       
       const [bedHourStr, bedMinStr] = userBedtime.split(':');
-      const bedHour = parseInt(bedHourStr, 10) || 22;
-      const bedMin = parseInt(bedMinStr, 10) || 0;
+      const bedHour = parseInt(bedHourStr || '22', 10) || 22;
+      const bedMin = parseInt(bedMinStr || '0', 10) || 0;
       
       if ((hours > bedHour) || (hours === bedHour && minutes >= bedMin) || (hours >= 0 && hours <= 4)) {
         isPastBedtime = true;
@@ -79,17 +79,17 @@ export const handleVoiceSession = async (req: Request, res: Response) => {
     );
 
     // 2. Generate Audio for AI Response
-    let audioBase64 = null;
+    let responseAudioBase64 = null;
     const audioBuffer = await generateAudioFromText(aiResponseText, voice || 'Tessa (Momy)', voiceProvider || 'Cartesia');
     if (audioBuffer) {
-      audioBase64 = audioBuffer.toString('base64');
+      responseAudioBase64 = audioBuffer.toString('base64');
     }
 
     res.json({
       success: true,
       data: {
         aiResponse: aiResponseText,
-        audioBase64
+        audioBase64: responseAudioBase64
       }
     });
 
