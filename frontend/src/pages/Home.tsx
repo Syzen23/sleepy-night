@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { SparklesIcon, MoonIcon, Cog8ToothIcon } from '@heroicons/react/24/outline';
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import BottomNav from '../components/BottomNav';
 import PageLayout from '../components/PageLayout';
 
 const Particles = () => {
@@ -282,8 +281,6 @@ const Home = () => {
           </p>
         </div>
       </main>
-
-      <BottomNav />
     </PageLayout>
   );
 };

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Home from './pages/Home';
 import Session from './pages/Session';
@@ -10,6 +10,13 @@ import Mood from './pages/Mood';
 import Reminder from './pages/Reminder';
 import EndSession from './pages/EndSession';
 import ReminderPopup from './components/ReminderPopup';
+import BottomNav from './components/BottomNav';
+
+const NavigationWrapper = () => {
+  const location = useLocation();
+  const showNav = ['/', '/thoughts', '/profile'].includes(location.pathname);
+  return showNav ? <BottomNav /> : null;
+};
 
 function App() {
   const [showReminder, setShowReminder] = useState(false);
@@ -76,6 +83,7 @@ function App() {
         <Route path="/reminder" element={<Reminder />} />
         <Route path="/end-session" element={<EndSession />} />
       </Routes>
+      <NavigationWrapper />
       {showReminder && <ReminderPopup onDismiss={handleDismissReminder} />}
     </Router>
   );

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import BottomNav from '../components/BottomNav';
 import PageLayout from '../components/PageLayout';
 import { ChevronDownIcon, ChevronUpIcon, TrashIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
@@ -278,7 +277,6 @@ const Thoughts = () => {
       </div>
 
     </PageLayout>
-    <BottomNav />
     </>
   );
 };
