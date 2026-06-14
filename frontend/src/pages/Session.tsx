@@ -48,6 +48,7 @@ const Session = () => {
   const speechRecognition = useRef<any>(null);
   const mediaRecorder = useRef<MediaRecorder | null>(null);
   const audioChunks = useRef<Blob[]>([]);
+  const glowRef = useRef<HTMLDivElement>(null);
   const finalTranscript = useRef<string>('');
   const currentInterim = useRef<string>('');
   const silenceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -178,8 +179,14 @@ const Session = () => {
     }
     const avg = sum / dataArray.current.length;
     
-    // Jika volume suara terdeteksi di atas batas ambang bising (12)
-    if (avg > 12) {
+    if (glowRef.current) {
+       // Simple visual feedback when speaking (no requestAnimationFrame loop)
+       glowRef.current.style.transform = `scale(${1 + Math.min(0.15, avg / 150)})`;
+       glowRef.current.style.opacity = avg > 4 ? '1' : '0.8';
+    }
+
+    // Jika volume suara terdeteksi di atas batas ambang bising (4 untuk sensitivitas HP)
+    if (avg > 4) {
        if (noInputTimer.current) clearTimeout(noInputTimer.current);
        if (silenceTimer.current) clearTimeout(silenceTimer.current);
        
@@ -226,6 +233,9 @@ const Session = () => {
         };
         
         if (audioContext.current && analyser.current) {
+          if (audioContext.current.state === 'suspended') {
+            await audioContext.current.resume();
+          }
           if (micSource.current) micSource.current.disconnect();
           micSource.current = audioContext.current.createMediaStreamSource(stream);
           micSource.current.connect(analyser.current);
@@ -600,7 +610,9 @@ const Session = () => {
         ))}
 
         {/* Central Profile Image Container */}
-        <div className={`relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-2 transition-all duration-700 z-10 backdrop-blur-sm ${
+        <div 
+          ref={glowRef}
+          className={`relative w-48 h-48 md:w-56 md:h-56 rounded-full overflow-hidden border-2 transition-all duration-200 z-10 backdrop-blur-sm ${
           callState === CallState.Incoming ? 'border-primary/50 animate-pulse shadow-[0_0_50px_rgba(195,226,186,0.4)]' :
           isRecording 
             ? 'border-primary shadow-[0_0_60px_rgba(195,226,186,0.5)]' 
