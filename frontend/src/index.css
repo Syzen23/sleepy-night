@@ -1,0 +1,194 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #c3e2ba;
+  --on-primary: #1d361a;
+  --background: #131313;
+  --on-background: #e5e2e1;
+  --surface: #131313;
+  --surface-variant: #1e251f;
+  --on-surface-variant: #c3c8bd;
+  --mountain-overlay: rgba(29, 54, 26, 0.35);
+  --theme-glow: rgba(195, 226, 186, 0.15);
+}
+
+
+
+@theme {
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-background: var(--background);
+  --color-on-background: var(--on-background);
+  --color-surface: var(--surface);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface-variant: var(--on-surface-variant);
+
+  --color-matcha-50: #f5f8f5;
+  --color-matcha-100: #e5efe5;
+  --color-matcha-200: #cce0cc;
+  --color-matcha-300: #a8cba8;
+  --color-matcha-400: #7eb07e;
+  --color-matcha-500: #5c955c;
+  --color-matcha-600: #467746;
+  --color-matcha-700: #395f39;
+  --color-matcha-800: #2f4d2f;
+  --color-matcha-900: #274027;
+  --color-matcha-950: #132213;
+
+  --color-night-900: #0f1411;
+  --color-night-950: #080b09;
+
+  --font-geist: 'Geist', sans-serif;
+}
+
+/* Floating particles animation */
+@keyframes float {
+  0% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+  50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+  100% { transform: translateY(0px) rotate(360deg); opacity: 0.2; }
+}
+
+@keyframes shooting-star {
+  0% { transform: rotate(45deg) translateY(0); opacity: 0; }
+  5% { opacity: 1; }
+  40% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
+  100% { transform: rotate(45deg) translateY(1200px); opacity: 0; }
+}
+
+@keyframes fly-across {
+  0% { transform: translate(110vw, 20vh) scale(0.5); opacity: 0; }
+  5% { opacity: 0.8; }
+  95% { opacity: 0.8; }
+  100% { transform: translate(-20vw, 10vh) scale(0.4); opacity: 0; }
+}
+
+@keyframes fly-across-reverse {
+  0% { transform: translate(-20vw, 30vh) scale(0.6) scaleX(-1); opacity: 0; }
+  5% { opacity: 0.8; }
+  95% { opacity: 0.8; }
+  100% { transform: translate(110vw, 15vh) scale(0.5) scaleX(-1); opacity: 0; }
+}
+
+
+
+.animate-fly-across {
+  animation: fly-across 35s linear infinite;
+}
+
+.animate-fly-across-reverse {
+  animation: fly-across-reverse 45s linear infinite;
+}
+
+@keyframes flap {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(0.3); }
+}
+
+.animate-flap {
+  animation: flap 0.8s ease-in-out infinite;
+}
+
+.animate-flap-fast {
+  animation: flap 0.6s ease-in-out infinite;
+}
+
+.animate-flap-slow {
+  animation: flap 1s ease-in-out infinite;
+}
+
+@utility particle {
+  position: absolute;
+  background: radial-gradient(circle, var(--primary) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float 8s infinite ease-in-out;
+}
+
+@utility glow-bloom {
+  box-shadow: 0 0 40px 10px var(--theme-glow);
+}
+
+@utility glass-stroke {
+  border: 1px solid transparent;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)) border-box;
+  -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-on-background);
+  font-family: var(--font-geist);
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+  overflow-y: scroll; /* Force scrollbar to prevent layout shifts */
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  background: transparent;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+}
+
+/* Rocking animation for the crescent moon */
+@keyframes rock-moon {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+/* Drifting animation for the cloud */
+@keyframes drift-cloud {
+  0% { transform: translateX(0px) translateY(0px); }
+  50% { transform: translateX(5px) translateY(-1px); }
+  100% { transform: translateX(0px) translateY(0px); }
+}
+
+/* Breathing animation for the outer ring glow */
+@keyframes breathing-glow {
+  0% { opacity: 0.45; transform: scale(0.97); }
+  50% { opacity: 0.85; transform: scale(1.03); }
+  100% { opacity: 0.45; transform: scale(0.97); }
+}
+
+.animate-rock-moon {
+  animation: rock-moon 6s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-drift-cloud {
+  animation: drift-cloud 8s ease-in-out infinite;
+  transform-origin: center;
+}
+
+.animate-breathing-glow {
+  animation: breathing-glow 4s ease-in-out infinite;
+}
+
+/* Cloud passing across the screen */
+@keyframes cloud-pass {
+  0% { transform: translateX(-300px); }
+  100% { transform: translateX(100vw); }
+}
+
+.animate-cloud-pass {
+  animation: cloud-pass linear infinite;
+}

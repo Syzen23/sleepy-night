@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lumiere - Digital Somnology</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config from Guidelines -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c3c8bd",
+                        "on-secondary": "#24342b",
+                        "surface": "#131313",
+                        "outline-variant": "#434840",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#3a3939",
+                        "outline": "#8d9289",
+                        "primary-container": "#a8c69f",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-fixed-variant": "#3a4b41",
+                        "background": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "on-error": "#690005",
+                        "surface-variant": "#353534",
+                        "on-tertiary": "#2f3131",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "inverse-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#e2e2e2",
+                        "tertiary": "#d9dada",
+                        "inverse-primary": "#4a6545",
+                        "surface-container-highest": "#353534",
+                        "error-container": "#93000a",
+                        "primary": "#c3e2ba",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed-dim": "#b8cbbe",
+                        "on-primary": "#1d361a",
+                        "secondary-container": "#3a4b41",
+                        "on-secondary-container": "#a7baad",
+                        "secondary": "#b8cbbe",
+                        "on-primary-fixed-variant": "#334d2f",
+                        "primary-fixed-dim": "#b1cfa7",
+                        "on-secondary-fixed": "#0f1f17",
+                        "on-primary-fixed": "#082007",
+                        "surface-container": "#201f1f",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#ccebc2",
+                        "surface-tint": "#b1cfa7",
+                        "on-tertiary-container": "#4b4d4d",
+                        "tertiary-container": "#bdbebe",
+                        "on-primary-container": "#395334",
+                        "secondary-fixed": "#d4e7da"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "48px",
+                        "base": "8px",
+                        "gutter": "16px",
+                        "stack-sm": "12px",
+                        "container-margin": "32px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg-mobile": ["Geist", "sans-serif"],
+                        "headline-md": ["Geist", "sans-serif"],
+                        "body-lg": ["Geist", "sans-serif"],
+                        "headline-lg": ["Geist", "sans-serif"],
+                        "body-md": ["Geist", "sans-serif"],
+                        "label-md": ["Geist", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-lg-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "300" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "letterSpacing": "0em", "fontWeight": "400" }],
+                        "body-lg": ["18px", { "lineHeight": "30px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "headline-lg": ["40px", { "lineHeight": "52px", "letterSpacing": "-0.02em", "fontWeight": "300" }],
+                        "body-md": ["16px", { "lineHeight": "26px", "letterSpacing": "0.01em", "fontWeight": "400" }],
+                        "label-md": ["14px", { "lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        /* Floating particles animation */
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+            50% { transform: translateY(-20px) rotate(180deg); opacity: 0.8; }
+            100% { transform: translateY(0px) rotate(360deg); opacity: 0.2; }
+        }
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(195,226,186,0.8) 0%, rgba(195,226,186,0) 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        /* Subtle glow for interactive elements */
+        .glow-bloom {
+            box-shadow: 0 0 40px 10px rgba(195,226,186,0.15);
+        }
+        
+        /* Glassmorphic inner glow stroke */
+        .glass-stroke {
+            border: 1px solid transparent;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0)) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen relative overflow-hidden font-body-md antialiased selection:bg-primary/30 selection:text-primary">
+<!-- Background Layer -->
+<div class="absolute inset-0 z-0">
+<img alt="Serene mountain landscape" class="w-full h-full object-cover opacity-80 mix-blend-screen" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHZsTBhbsFINPnNmFQQB2qL3KFmAekml1yUWVdrUeMUYmkjk4hWcabUxggZG_NlH2aygcew4OWPJx_2Cfqe4iNJFYptFS0wN2bc1rNtAO_DMgxwjcWsjFWEujR3jgqeVpnONjjm7QL-XJEsqvBEV21HR0VRjgVtljCcwS5WcvcdHYuXHwDpQMn8Jj2sMEgLBl8fhD13Gxp4pcB7bJKRjADfh2RLo0dQ9gcwgo6NtH9fQLaGifJb7KMWH2uKweUwYrUSxmiQxVkVqB0"/>
+<!-- Charcoal/Forest Gradient Overlay -->
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent"></div>
+</div>
+<!-- Particles Overlay (JS initialized below) -->
+<div class="absolute inset-0 z-10 overflow-hidden pointer-events-none" id="particles-container"></div>
+<!-- Main Content Canvas -->
+<main class="relative z-20 flex flex-col items-center justify-between min-h-[calc(100vh-100px)] p-container-margin md:max-w-7xl md:mx-auto pt-16">
+<!-- Top App Bar (Modified for Home Context) -->
+<header class="w-full top-0 px-container-margin pt-stack-md flex justify-between items-center z-30 fixed top-0 left-0 right-0 max-w-7xl mx-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[28px]" style="font-variation-settings: 'FILL' 1;">nightlight</span>
+<span class="font-headline-md text-headline-md font-light tracking-widest text-primary uppercase">Lumiere</span>
+</div>
+<button class="w-12 h-12 rounded-full flex items-center justify-center hover:opacity-80 transition-opacity bg-surface-variant/20 backdrop-blur-md border border-white/5">
+<span class="material-symbols-outlined text-on-surface-variant text-[24px]">settings</span>
+</button>
+</header>
+<!-- Time Display -->
+<div class="mt-stack-lg pt-stack-lg w-full flex justify-center opacity-80 hover:opacity-100 transition-opacity duration-500">
+<h2 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-on-surface-variant tracking-widest font-light">
+                22:00
+            </h2>
+</div>
+<!-- Center Content Area -->
+<div class="flex flex-col items-center text-center max-w-xl mx-auto mt-auto mb-[20vh]">
+<!-- Greeting Sequence -->
+<div class="space-y-stack-sm mb-stack-lg">
+<h1 class="font-headline-lg-mobile md:font-headline-lg text-headline-lg-mobile md:text-headline-lg text-white font-light tracking-tight drop-shadow-lg">
+                    Good evening, Alex
+                </h1>
+<p class="font-body-lg text-body-lg text-primary/80 font-light tracking-wide max-w-md mx-auto">
+                    Let’s close your day together.
+                </p>
+</div>
+<!-- Primary AI Interaction Button -->
+<button class="group relative flex items-center gap-4 px-10 py-5 rounded-full bg-[#FFFFFF05] backdrop-blur-[20px] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.2)] hover:bg-[#FFFFFF0A] transition-all duration-500 ease-out transform hover:-translate-y-1 glow-bloom">
+<!-- Inner Glow Ring -->
+<div class="absolute inset-0 rounded-full border border-primary/20 group-hover:border-primary/40 transition-colors duration-500"></div>
+<!-- Icon -->
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center text-on-primary shadow-[0_0_15px_rgba(195,226,186,0.4)] group-hover:shadow-[0_0_25px_rgba(195,226,186,0.6)] transition-shadow duration-500">
+<span class="material-symbols-outlined text-[20px]" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<!-- Text -->
+<span class="font-label-md text-label-md text-white tracking-widest uppercase opacity-90 group-hover:opacity-100 group-hover:text-primary transition-colors duration-300">
+                    I'm ready to talk
+                </span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Bar Shell -->
+<nav class="fixed bottom-stack-lg left-1/2 -translate-x-1/2 w-[calc(100%-64px)] max-w-md rounded-full backdrop-blur-xl border border-white/10 shadow-[0_20px_40px_rgba(0,0,0,0.3)] bg-surface-variant/10 z-50 overflow-hidden">
+<ul class="flex justify-around items-center p-base relative">
+<!-- Home Item (Active) -->
+<li class="relative z-10 w-1/3">
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-6 py-2 shadow-[0_0_20px_rgba(195,226,186,0.3)] scale-95 transition-transform duration-200 w-full" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1" style="font-variation-settings: 'FILL' 1;">home_app_logo</span>
+<span class="font-label-md text-label-md text-[10px]">Home</span>
+</a>
+</li>
+<!-- Thoughts Item (Inactive) -->
+<li class="relative z-10 w-1/3">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary transition-colors scale-95 active:scale-90 duration-200 w-full group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform duration-300">auto_awesome</span>
+<span class="font-label-md text-label-md text-[10px] opacity-70 group-hover:opacity-100 transition-opacity">Thoughts</span>
+</a>
+</li>
+<!-- Profile Item (Inactive) -->
+<li class="relative z-10 w-1/3">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-6 py-2 hover:text-primary transition-colors scale-95 active:scale-90 duration-200 w-full group" href="#">
+<span class="material-symbols-outlined text-[24px] mb-1 group-hover:-translate-y-1 transition-transform duration-300">person</span>
+<span class="font-label-md text-label-md text-[10px] opacity-70 group-hover:opacity-100 transition-opacity">Profile</span>
+</a>
+</li>
+</ul>
+</nav>
+<!-- Vanilla JS for Atmospheric Effects -->
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const container = document.getElementById('particles-container');
+            const particleCount = 25;
+
+            for (let i = 0; i < particleCount; i++) {
+                createParticle(container);
+            }
+
+            function createParticle(container) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Randomize properties
+                const size = Math.random() * 4 + 1; // 1px to 5px
+                const posX = Math.random() * 100; // 0% to 100%vw
+                const posY = Math.random() * 100; // 0% to 100%vh
+                const delay = Math.random() * 5; // 0s to 5s
+                const duration = Math.random() * 10 + 5; // 5s to 15s
+                
+                // Apply styles
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${posX}%`;
+                particle.style.top = `${posY}%`;
+                particle.style.animationDelay = `${delay}s`;
+                particle.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(particle);
+            }
+        });
+    </script>
+</body></html>
