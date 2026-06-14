@@ -23,13 +23,13 @@ const PageLayout = ({ children, innerClassName = '', gradientFrom = 'from-primar
   }, { scope: container });
 
   return (
-    <div className={`w-full flex flex-col items-center justify-center p-4 md:p-8 relative bg-background text-on-background font-body-md overflow-x-hidden ${disableScroll ? 'h-[100dvh] overflow-y-hidden' : 'min-h-[100dvh] overflow-y-auto'}`}>
+    <div className={`w-full flex flex-col items-center justify-center p-4 md:p-8 bg-background text-on-background font-body-md overflow-x-hidden ${disableScroll ? 'fixed inset-0 overflow-y-hidden overscroll-none' : 'relative min-h-[100dvh] overflow-y-auto'}`}>
       <div className="absolute inset-0 z-0 bg-background pointer-events-none fixed">
         <div className={`absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] ${gradientFrom} via-background to-background`}></div>
         {backgroundElement}
       </div>
 
-      <div ref={container} className={`relative z-10 w-full max-w-lg mx-auto flex flex-col items-center justify-center py-8 opacity-100 ${innerClassName}`}>
+      <div ref={container} className={`relative z-10 w-full max-w-lg mx-auto flex flex-col items-center justify-center py-2 md:py-8 opacity-100 ${innerClassName}`}>
         {children}
       </div>
     </div>
