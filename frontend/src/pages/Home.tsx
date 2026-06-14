@@ -5,119 +5,7 @@ import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import PageLayout from '../components/PageLayout';
 
-const Particles = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
-    container.innerHTML = '';
-    const particleCount = 25;
-
-    for (let i = 0; i < particleCount; i++) {
-      const particle = document.createElement('div');
-      particle.classList.add('particle');
-      
-      const size = Math.random() * 4 + 1;
-      const posX = Math.random() * 100;
-      const posY = Math.random() * 100;
-      const delay = Math.random() * 5;
-      const duration = Math.random() * 10 + 5;
-      
-      particle.style.width = `${size}px`;
-      particle.style.height = `${size}px`;
-      particle.style.left = `${posX}%`;
-      particle.style.top = `${posY}%`;
-      particle.style.animationDelay = `${delay}s`;
-      particle.style.animationDuration = `${duration}s`;
-      
-      container.appendChild(particle);
-    }
-  }, []);
-
-  return <div ref={containerRef} className="absolute inset-0 z-10 overflow-hidden pointer-events-none" />;
-};
-
-const ShootingStars = () => {
-  const containerRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const container = containerRef.current;
-    container.innerHTML = '';
-    const starCount = 3; 
-
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement('div');
-      star.className = 'absolute opacity-0 pointer-events-none rounded-full';
-      star.style.width = '2px';
-      star.style.height = '120px';
-      star.style.background = 'linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.6) 80%, rgba(255,255,255,0.8))';
-      star.style.boxShadow = '0 0 10px 1px rgba(255,255,255,0.2)';
-      
-      const posX = Math.random() * 100 + 50; 
-      const posY = Math.random() * 50 - 50; 
-      const delay = Math.random() * 15; 
-      const duration = Math.random() * 8 + 12; 
-      
-      star.style.left = `${posX}%`;
-      star.style.top = `${posY}%`;
-      star.style.animation = `shooting-star ${duration}s ease-in-out ${delay}s infinite`;
-      
-      container.appendChild(star);
-    }
-  }, []);
-
-  return <div ref={containerRef} className="absolute inset-0 z-0 overflow-hidden pointer-events-none" />;
-};
-
-const Birds = () => {
-  return (
-    <div className="absolute inset-0 z-10 overflow-hidden pointer-events-none">
-      {/* Flock 1: Far, Right to Left */}
-      <div className="absolute w-[200px] h-[100px] animate-fly-across">
-        <svg className="absolute top-4 left-10 w-6 h-6 text-white animate-flap-slow" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-0 left-0 w-5 h-5 text-white/90 animate-flap-fast" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-8 left-2 w-4 h-4 text-white/80 animate-flap" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-6 left-16 w-5 h-5 text-white/90 animate-flap-fast" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-      </div>
-
-      {/* Flock 2: Far, Left to Right (delayed) */}
-      <div className="absolute w-[180px] h-[80px] animate-fly-across-reverse" style={{ animationDelay: '-15s' }}>
-        <svg className="absolute top-2 left-12 w-5 h-5 text-white/80 animate-flap-slow" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-8 left-4 w-4 h-4 text-white/70 animate-flap-fast" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-4 left-0 w-4 h-4 text-white/60 animate-flap" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-      </div>
-
-      {/* Flock 3: Close (Foreground), Right to Left */}
-      <div className="absolute w-[600px] h-[300px] animate-fly-across" style={{ animationDuration: '20s', animationDelay: '-2s', zIndex: 40 }}>
-        <svg className="absolute top-[20%] left-[10%] w-24 h-24 text-white/50 blur-[2px] drop-shadow-lg animate-flap-slow" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-[40%] left-[30%] w-32 h-32 text-white/40 blur-[3px] drop-shadow-xl animate-flap" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-        <svg className="absolute top-[10%] left-[50%] w-20 h-20 text-white/60 blur-[1px] drop-shadow-md animate-flap-fast" viewBox="0 0 24 24" fill="currentColor">
-           <path d="M 2 12 Q 6 8 10 12 Q 14 8 18 12 Q 14 10 10 13 Q 6 10 2 12 Z" />
-        </svg>
-      </div>
-    </div>
-  );
-};
 
 const Home = () => {
   const navigate = useNavigate();
@@ -222,9 +110,7 @@ const Home = () => {
       }
     >
 
-      <Particles />
-      <ShootingStars />
-      <Birds />
+
 
       {/* Main Content Canvas */}
       <main ref={mainRef} className="relative z-20 flex flex-col items-center justify-between h-full flex-1 w-full px-4 md:px-8 pt-24 pb-28 md:max-w-7xl md:mx-auto">

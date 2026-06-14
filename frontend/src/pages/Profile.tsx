@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import PageLayout from '../components/PageLayout';
-import { AdjustmentsHorizontalIcon, BellAlertIcon } from '@heroicons/react/24/outline';
+import { AdjustmentsHorizontalIcon, BellAlertIcon, SpeakerWaveIcon } from '@heroicons/react/24/outline';
 import { useNavigate } from 'react-router-dom';
 
 const Profile = () => {
@@ -222,7 +222,7 @@ const Profile = () => {
 
             <div className="flex items-center justify-between p-4 rounded-2xl hover:bg-[#1e2a22] transition-colors group relative">
               <div className="flex items-center space-x-4">
-                <AdjustmentsHorizontalIcon className="w-6 h-6 text-primary/70 group-hover:text-primary transition-colors opacity-0" />
+                <SpeakerWaveIcon className="w-6 h-6 text-primary/70 group-hover:text-primary transition-colors" />
                 <span className="text-on-surface-variant group-hover:text-white transition-colors font-light">Voice Model</span>
               </div>
               <select
