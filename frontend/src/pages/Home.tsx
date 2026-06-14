@@ -4,6 +4,7 @@ import { SparklesIcon, MoonIcon, Cog8ToothIcon } from '@heroicons/react/24/outli
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import BottomNav from '../components/BottomNav';
+import PageLayout from '../components/PageLayout';
 
 const Particles = () => {
   const containerRef = useRef<HTMLDivElement>(null);
