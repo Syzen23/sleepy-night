@@ -205,6 +205,7 @@ const Home = () => {
   return (
     <PageLayout 
       disableScroll={true}
+      maxWidthClass="max-w-7xl"
       backgroundElement={
         <div className="absolute inset-0 z-0 bg-background">
           <img 

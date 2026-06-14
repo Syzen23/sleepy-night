@@ -253,7 +253,7 @@ const Thoughts = () => {
           })}
           
           {totalPages > 1 && (
-            <div className="flex items-center justify-center space-x-4 pt-6 pb-2">
+            <div className="flex items-center justify-center space-x-4 pt-6 pb-16">
               <button 
                 onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
                 disabled={currentPage === 1}

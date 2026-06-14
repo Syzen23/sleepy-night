@@ -8,9 +8,10 @@ interface PageLayoutProps {
   gradientFrom?: string;
   backgroundElement?: React.ReactNode;
   disableScroll?: boolean;
+  maxWidthClass?: string;
 }
 
-const PageLayout = ({ children, innerClassName = '', gradientFrom = 'from-primary/5', backgroundElement, disableScroll = false }: PageLayoutProps) => {
+const PageLayout = ({ children, innerClassName = '', gradientFrom = 'from-primary/5', backgroundElement, disableScroll = false, maxWidthClass = 'max-w-lg' }: PageLayoutProps) => {
   const container = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
@@ -29,7 +30,7 @@ const PageLayout = ({ children, innerClassName = '', gradientFrom = 'from-primar
         {backgroundElement}
       </div>
 
-      <div ref={container} className={`relative z-10 w-full max-w-lg mx-auto flex flex-col items-center justify-center py-2 md:py-8 opacity-100 ${innerClassName}`}>
+      <div ref={container} className={`relative z-10 w-full ${maxWidthClass} flex-1 mx-auto flex flex-col items-center justify-center py-2 md:py-8 opacity-100 ${innerClassName}`}>
         {children}
       </div>
     </div>
