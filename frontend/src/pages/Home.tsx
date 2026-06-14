@@ -224,7 +224,7 @@ const Home = () => {
       <Birds />
 
       {/* Main Content Canvas */}
-      <main ref={mainRef} className="relative z-20 flex flex-col items-center justify-between min-h-[calc(100vh-100px)] p-8 md:max-w-7xl md:mx-auto pt-16 w-full opacity-100">
+      <main ref={mainRef} className="relative z-20 flex flex-col items-center justify-between h-full flex-1 w-full px-4 md:px-8 pt-24 pb-28 md:max-w-7xl md:mx-auto">
         {/* Top App Bar */}
         <header className="w-full px-8 pt-6 flex justify-between items-center fixed top-0 left-0 right-0 max-w-7xl mx-auto z-30">
           <div className="flex items-center gap-2">
@@ -237,14 +237,14 @@ const Home = () => {
         </header>
 
         {/* Time Display */}
-        <div className="mt-12 pt-12 w-full flex justify-center opacity-80 hover:opacity-100 transition-opacity duration-500">
+        <div className="w-full flex justify-center opacity-80 hover:opacity-100 transition-opacity duration-500 mt-4 md:mt-12">
           <h2 className="text-5xl md:text-6xl text-on-surface-variant tracking-widest font-light">
             {formattedTime.replace('.', ':')}
           </h2>
         </div>
 
         {/* Center Content Area */}
-        <div className="flex flex-col items-center text-center max-w-xl mx-auto mt-auto mb-[20vh]">
+        <div className="flex flex-col items-center text-center max-w-xl mx-auto">
           {/* Greeting Sequence */}
           <div className="space-y-3 mb-12">
             <h1 className="text-4xl md:text-5xl text-white font-light tracking-tight drop-shadow-lg">
