@@ -575,8 +575,9 @@ const Session = () => {
 
   return (
     <PageLayout 
-      innerClassName="gap-6 md:gap-8 justify-center min-h-[90vh]" 
+      innerClassName="flex-1 w-full h-full flex flex-col justify-between items-center" 
       gradientFrom="from-[#0a0f0d]/80"
+      disableScroll={true}
       backgroundElement={
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary/10 rounded-full blur-[100px] animate-pulse" style={{ animationDuration: '8s' }}></div>
@@ -585,14 +586,14 @@ const Session = () => {
       }
     >
 
-      <div className="text-center space-y-3 w-full mt-4 relative z-10">
-        <h1 className="text-4xl md:text-5xl text-white font-light tracking-widest drop-shadow-md">{statusTitle}</h1>
-        <p className="text-primary/80 whitespace-pre-line leading-relaxed max-w-[300px] mx-auto text-sm md:text-base font-light tracking-wide opacity-90">
+      <div className="text-center space-y-1 md:space-y-3 w-full mt-2 relative z-10">
+        <h1 className="text-3xl md:text-5xl text-white font-light tracking-widest drop-shadow-md">{statusTitle}</h1>
+        <p className="text-primary/80 whitespace-pre-line leading-relaxed max-w-[300px] mx-auto text-xs md:text-base font-light tracking-wide opacity-90">
           {statusSub}
         </p>
       </div>
 
-      <div className="relative flex items-center justify-center w-[300px] h-[300px] my-6 z-10">
+      <div className="relative flex items-center justify-center w-[250px] h-[250px] md:w-[300px] md:h-[300px] my-auto z-10">
         {/* Dynamic Concentric Rings */}
         {[0, 1, 2].map((i) => (
           <div
