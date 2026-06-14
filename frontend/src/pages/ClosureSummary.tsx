@@ -173,9 +173,10 @@ const ClosureSummary = () => {
           className={`w-72 h-72 rounded-3xl backdrop-blur-md border flex items-center justify-center p-3 relative z-10 transition-all duration-500 bg-[#FFFFFF02] cursor-pointer ${glowColor}`}
         >
           <img 
-            src={`/${theme}.png`} 
+            src={`/assets/images/${theme}.png`} 
             alt="Night Theme" 
             className="w-full h-full rounded-2xl object-cover shadow-inner pointer-events-none select-none"
+            loading="lazy"
             style={{
               transform: 'translateZ(30px)',
               transition: 'transform 0.1s ease-out'
