@@ -166,65 +166,9 @@ const Session = () => {
   const lastWaveformUpdate = useRef<number>(0);
 
   const updateWaveform = () => {
-    if (!analyser.current || !dataArray.current) return;
-    
-    if (isProcessingRef.current) {
-      animationFrameId.current = requestAnimationFrame(updateWaveform);
-      return;
-    }
-
-    const now = Date.now();
-    // Throttle to ~15fps (60ms) to save mobile CPU
-    if (now - lastWaveformUpdate.current < 60) {
-      animationFrameId.current = requestAnimationFrame(updateWaveform);
-      return;
-    }
-    lastWaveformUpdate.current = now;
-
-    analyser.current.getByteFrequencyData(dataArray.current);
-    
-    // Calculate average volume (0.0 to 1.0)
-    let sum = 0;
-    for (let i = 0; i < dataArray.current.length; i++) {
-      sum += dataArray.current[i];
-    }
-    const avg = sum / dataArray.current.length;
-    const volumeFactor = Math.min(1.0, avg / 128); // normalize with slightly lower peak for sensitivity
-
-    const isActive = isRecordingRef.current || isPlayingRef.current;
-
-    ringsRef.current.forEach((ring, i) => {
-      if (ring) {
-        if (isActive) {
-          // Dynamic scale and opacity based on speaking volume
-          const baseScale = 1.0;
-          const maxScaleAdd = 0.35 + i * 0.35; // Ring 0: 0.35, Ring 1: 0.7, Ring 2: 1.05
-          const targetScale = baseScale + volumeFactor * maxScaleAdd;
-          
-          // Outer rings are progressively fainter
-          const baseOpacity = 0.7 - i * 0.2; // Ring 0: 0.7, Ring 1: 0.5, Ring 2: 0.3
-          const targetOpacity = volumeFactor > 0.01 ? baseOpacity * (0.3 + volumeFactor * 0.7) : 0;
-
-          gsap.to(ring, {
-            scale: targetScale,
-            opacity: targetOpacity,
-            duration: 0.08,
-            ease: "power2.out",
-            overwrite: "auto"
-          });
-        } else {
-          gsap.to(ring, {
-            scale: 1.0,
-            opacity: 0,
-            duration: 0.15,
-            ease: "power2.out",
-            overwrite: "auto"
-          });
-        }
-      }
-    });
-
-    animationFrameId.current = requestAnimationFrame(updateWaveform);
+    // Animasi telah dinonaktifkan sepenuhnya untuk meringankan beban CPU di HP (Sesuai request user)
+    // Tidak ada lagi looping requestAnimationFrame atau perhitungan data array
+    return;
   };
 
   const startRecording = async () => {
