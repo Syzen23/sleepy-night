@@ -116,8 +116,8 @@ const Profile = () => {
 
   return (
     <>
-    <PageLayout disableScroll={true}>
-      <div className="w-full max-w-md mx-auto space-y-8">
+    <PageLayout innerClassName="pb-32">
+      <div className="w-full h-full flex flex-col max-w-sm mx-auto space-y-8 pb-20">
         <div className="text-center space-y-2 relative">
           <div className="w-24 h-24 rounded-full mx-auto flex items-center justify-center mb-4 shadow-[0_0_30px_rgba(195,226,186,0.15)] overflow-hidden border-2 border-primary/20">
             <img src="/assets/images/me.jpg" alt="Profile Avatar" className="w-full h-full object-cover" />

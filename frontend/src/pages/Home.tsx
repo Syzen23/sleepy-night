@@ -203,21 +203,24 @@ const Home = () => {
   });
 
   return (
-    <PageLayout disableScroll={true}>
-      {/* Background Layer */}
-      <div className="absolute inset-0 z-0 bg-background">
-        <img 
-          alt="Serene mountain landscape" 
-          className="w-full h-full object-cover opacity-70" 
-          src="/assets/images/mountain_bg.png"
-        />
-        {/* Theme color tint overlay for the mountain */}
-        <div className="absolute inset-0 bg-[var(--mountain-overlay)] mix-blend-color pointer-events-none"></div>
+    <PageLayout 
+      disableScroll={true}
+      backgroundElement={
+        <div className="absolute inset-0 z-0 bg-background">
+          <img 
+            alt="Serene mountain landscape" 
+            className="w-full h-full object-cover opacity-70" 
+            src="/assets/images/mountain_bg.png"
+          />
+          {/* Theme color tint overlay for the mountain */}
+          <div className="absolute inset-0 bg-[var(--mountain-overlay)] mix-blend-color pointer-events-none"></div>
 
-        {/* Charcoal/Forest Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-transparent"></div>
-      </div>
+          {/* Charcoal/Forest Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-background/30 via-transparent to-transparent"></div>
+        </div>
+      }
+    >
 
       <Particles />
       <ShootingStars />
