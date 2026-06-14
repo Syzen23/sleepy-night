@@ -163,11 +163,40 @@ const Session = () => {
     setAiText('');
   };
 
-  const lastWaveformUpdate = useRef<number>(0);
+  const vadActive = useRef<boolean>(false);
+
+  const detectSilenceVAD = () => {
+    if (!vadActive.current || !analyser.current || !dataArray.current || !isRecordingRef.current) {
+      vadActive.current = false;
+      return;
+    }
+
+    analyser.current.getByteFrequencyData(dataArray.current);
+    let sum = 0;
+    for (let i = 0; i < dataArray.current.length; i++) {
+      sum += dataArray.current[i];
+    }
+    const avg = sum / dataArray.current.length;
+    
+    // Jika volume suara terdeteksi di atas batas ambang bising (12)
+    if (avg > 12) {
+       if (noInputTimer.current) clearTimeout(noInputTimer.current);
+       if (silenceTimer.current) clearTimeout(silenceTimer.current);
+       
+       // Setel timer berhenti merekam jika hening 2 detik setelah bicara
+       silenceTimer.current = setTimeout(() => {
+          if (callStateRef.current === CallState.Connected && isRecordingRef.current) {
+             stopRecording();
+          }
+       }, 2000);
+    }
+
+    // Loop ringan: cek setiap 100ms (10 kali sedetik), hampir tidak memakan CPU
+    setTimeout(detectSilenceVAD, 100); 
+  };
 
   const updateWaveform = () => {
     // Animasi telah dinonaktifkan sepenuhnya untuk meringankan beban CPU di HP (Sesuai request user)
-    // Tidak ada lagi looping requestAnimationFrame atau perhitungan data array
     return;
   };
 
@@ -259,6 +288,11 @@ const Session = () => {
         console.warn("Speech Recognition API not supported in this browser.");
       }
 
+      if (!vadActive.current) {
+        vadActive.current = true;
+        detectSilenceVAD();
+      }
+
       setIsRecording(true);
       isRecordingRef.current = true;
       setIsProcessing(false);
@@ -279,6 +313,7 @@ const Session = () => {
       
       setIsRecording(false);
       isRecordingRef.current = false;
+      vadActive.current = false;
       setIsProcessing(true);
 
       if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
