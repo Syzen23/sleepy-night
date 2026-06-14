@@ -202,7 +202,7 @@ const Home = () => {
   });
 
   return (
-    <div className="w-full h-full min-h-screen relative flex items-center justify-center bg-background text-on-background">
+    <PageLayout disableScroll={true}>
       {/* Background Layer */}
       <div className="absolute inset-0 z-0 bg-background">
         <img 

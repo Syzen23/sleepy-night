@@ -171,10 +171,10 @@ const Thoughts = () => {
 
   return (
     <>
-    <PageLayout innerClassName="pb-32 w-full px-4" gradientFrom="from-primary/5">
-      <div className="w-full max-w-md mx-auto mt-4 md:mt-8 mb-10 space-y-2 text-center">
-        <h1 className="text-3xl md:text-4xl text-white font-light tracking-wide">You said</h1>
-        <p className="text-on-surface-variant text-sm md:text-base font-light">Your previous brain dumps</p>
+    <PageLayout disableScroll={true}>
+      <div className="w-full h-full flex flex-col px-4 max-w-md mx-auto">
+        <h1 className="text-3xl font-light tracking-wide mb-2 text-white">Your Nightly Thoughts</h1>
+        <p className="text-primary/70 text-sm mb-8 font-light">A collection of your late-night reflections.</p>
       </div>
 
       <div className="w-full max-w-md mx-auto space-y-4">
