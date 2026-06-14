@@ -279,7 +279,7 @@ const Home = () => {
       </main>
 
       <BottomNav />
-    </div>
+    </PageLayout>
   );
 };
 
