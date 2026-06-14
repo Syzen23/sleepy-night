@@ -46,6 +46,8 @@ const Session = () => {
   const mediaStream = useRef<MediaStream | null>(null);
   const audioPlayer = useRef<HTMLAudioElement | null>(null);
   const speechRecognition = useRef<any>(null);
+  const mediaRecorder = useRef<MediaRecorder | null>(null);
+  const audioChunks = useRef<Blob[]>([]);
   const finalTranscript = useRef<string>('');
   const currentInterim = useRef<string>('');
   const silenceTimer = useRef<NodeJS.Timeout | null>(null);
@@ -161,6 +163,8 @@ const Session = () => {
     setAiText('');
   };
 
+  const lastWaveformUpdate = useRef<number>(0);
+
   const updateWaveform = () => {
     if (!analyser.current || !dataArray.current) return;
     
@@ -168,6 +172,14 @@ const Session = () => {
       animationFrameId.current = requestAnimationFrame(updateWaveform);
       return;
     }
+
+    const now = Date.now();
+    // Throttle to ~15fps (60ms) to save mobile CPU
+    if (now - lastWaveformUpdate.current < 60) {
+      animationFrameId.current = requestAnimationFrame(updateWaveform);
+      return;
+    }
+    lastWaveformUpdate.current = now;
 
     analyser.current.getByteFrequencyData(dataArray.current);
     
@@ -221,6 +233,25 @@ const Session = () => {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
         mediaStream.current = stream;
         
+        let mimeType = 'audio/webm';
+        if (!MediaRecorder.isTypeSupported(mimeType)) {
+          mimeType = 'audio/mp4';
+        }
+        mediaRecorder.current = new MediaRecorder(stream, { mimeType });
+        mediaRecorder.current.ondataavailable = (e) => {
+          if (e.data.size > 0) audioChunks.current.push(e.data);
+        };
+        mediaRecorder.current.onstop = () => {
+          const audioBlob = new Blob(audioChunks.current, { type: mimeType });
+          audioChunks.current = [];
+          const reader = new FileReader();
+          reader.readAsDataURL(audioBlob);
+          reader.onloadend = () => {
+             const base64Audio = reader.result as string;
+             sendTranscriptToServer(base64Audio);
+          };
+        };
+        
         if (audioContext.current && analyser.current) {
           if (micSource.current) micSource.current.disconnect();
           micSource.current = audioContext.current.createMediaStreamSource(stream);
@@ -231,6 +262,11 @@ const Session = () => {
       finalTranscript.current = '';
       currentInterim.current = '';
       setLiveUserText('');
+      audioChunks.current = [];
+
+      if (mediaRecorder.current && mediaRecorder.current.state === 'inactive') {
+        mediaRecorder.current.start();
+      }
 
       if (noInputTimer.current) clearTimeout(noInputTimer.current);
       noInputTimer.current = setTimeout(() => {
@@ -300,21 +336,28 @@ const Session = () => {
       setIsRecording(false);
       isRecordingRef.current = false;
       setIsProcessing(true);
-      
-      setTimeout(() => {
-        if (callStateRef.current === CallState.Connected) {
-          sendTranscriptToServer();
-        }
-      }, 100);
+
+      if (mediaRecorder.current && mediaRecorder.current.state === 'recording') {
+        mediaRecorder.current.stop(); // This triggers onstop, which calls sendTranscriptToServer
+      } else {
+        setTimeout(() => {
+          if (callStateRef.current === CallState.Connected) {
+            sendTranscriptToServer();
+          }
+        }, 100);
+      }
     }
   };
 
-  const sendTranscriptToServer = async () => {
+  const sendTranscriptToServer = async (base64Audio?: string) => {
     try {
       let transcript = (finalTranscript.current + ' ' + currentInterim.current).trim();
       setLiveUserText(''); // clear user text
       
-      if (!transcript) {
+      // Jika speechRecognition gagal tapi kita punya audio dari MediaRecorder, kita hanya pakai [VOICE_INPUT]
+      if (!transcript && base64Audio) {
+        transcript = ""; // Backend will use whisper to transcribe it
+      } else if (!transcript && !base64Audio) {
         startRecording();
         return;
       }
@@ -346,7 +389,8 @@ const Session = () => {
           mood: sessionMood, 
           transcript: transcript,
           history: historyToSend,
-          voice: localStorage.getItem('appVoice') || 'Tessa (Momy)'
+          voice: localStorage.getItem('appVoice') || 'Tessa (Momy)',
+          audioBase64: base64Audio
         }),
       });
 

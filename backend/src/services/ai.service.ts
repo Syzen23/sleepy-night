@@ -1,8 +1,46 @@
 import Groq from 'groq-sdk';
 import * as dotenv from 'dotenv';
+import fs from 'fs';
+import path from 'path';
+import os from 'os';
 dotenv.config();
 
 const groq = new Groq({ apiKey: process.env.API_KEY_GROK || '' });
+
+/* =========================
+   AUDIO TRANSCRIPTION (WHISPER)
+========================= */
+
+export const transcribeAudioBase64 = async (audioBase64: string): Promise<string> => {
+  try {
+    // 1. Decode base64 to buffer
+    // remove data url prefix if exists (e.g. data:audio/webm;base64,)
+    const base64Data = audioBase64.replace(/^data:audio\/\w+;base64,/, '');
+    const buffer = Buffer.from(base64Data, 'base64');
+    
+    // 2. Write to temporary file (Whisper API expects a file)
+    const tempFilePath = path.join(os.tmpdir(), `whisper-${Date.now()}.webm`);
+    fs.writeFileSync(tempFilePath, buffer);
+
+    // 3. Send to Groq Whisper
+    const transcription = await groq.audio.transcriptions.create({
+      file: fs.createReadStream(tempFilePath),
+      model: "whisper-large-v3",
+      prompt: "Ini adalah rekaman percakapan bahasa Indonesia.",
+      response_format: "json",
+      language: "id", 
+      temperature: 0.0
+    });
+
+    // 4. Cleanup temp file
+    fs.unlinkSync(tempFilePath);
+
+    return transcription.text.trim();
+  } catch (error) {
+    console.error("Error transcribing audio with Groq Whisper:", error);
+    throw new Error("Gagal mentranskripsi suara");
+  }
+};
 
 /* =========================
    CHAT RESPONSE

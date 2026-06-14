@@ -1,15 +1,26 @@
 import type { Request, Response } from 'express';
 import { db } from '../db';
 import { sessions, users } from '../db/schema';
-import { getAiChatResponse, getFinalSessionSummary, generateAudioFromText } from '../services/ai.service';
+import { getAiChatResponse, getFinalSessionSummary, generateAudioFromText, transcribeAudioBase64 } from '../services/ai.service';
 import { desc, eq } from 'drizzle-orm';
 
 export const handleVoiceSession = async (req: Request, res: Response) => {
   try {
-    const { userId, mood, transcript, history, voice, voiceProvider } = req.body;
+    const { userId, mood, transcript, history, voice, voiceProvider, audioBase64 } = req.body;
 
-    if (!transcript) {
-      return res.status(400).json({ error: 'Transcript is required' });
+    let finalTranscript = transcript;
+
+    if (audioBase64) {
+      try {
+        finalTranscript = await transcribeAudioBase64(audioBase64);
+      } catch (err) {
+        console.error("Transcription failed", err);
+        return res.status(500).json({ error: "Gagal memproses rekaman suara" });
+      }
+    }
+
+    if (!finalTranscript) {
+      return res.status(400).json({ error: 'Transcript or audio is required' });
     }
 
     // 0. Fetch Contextual Memory on the very first turn & Get User Data
@@ -58,7 +69,14 @@ export const handleVoiceSession = async (req: Request, res: Response) => {
     }
 
     // 2. Process transcript with Groq (stateful, with history)
-    const aiResponseText = await getAiChatResponse(transcript, history || [], previousContext, isPastBedtime, currentTimeStr, userBedtime);
+    const aiResponseText = await getAiChatResponse(
+      finalTranscript, 
+      history, 
+      previousContext, 
+      isPastBedtime, 
+      currentTimeStr, 
+      userBedtime
+    );
 
     // 2. Generate Audio for AI Response
     let audioBase64 = null;
